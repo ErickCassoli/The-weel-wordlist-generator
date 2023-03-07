@@ -2,7 +2,7 @@ import itertools
 import time
 
 def linha():
-    print('\n\033[1;35m-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+	print('\n\033[1;35m-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
 
 info = []
 num = 1
@@ -22,23 +22,21 @@ linha()
 
 if personal_list == 'Y':
     
-    moreinfo = 'Y'
+	moreinfo = 'Y'
 
-    for num in itertools.count(start=1):
-        str_info = input(f"\n\033[1;96m[*] Informação {num} : ")
-        info.append(str_info)
-        
-        linha()
+	while moreinfo == 'Y':
 
-        moreinfo = str(input("\n\033[1;92m[*] Quer acrescentar mais informação? [Y/N] [*] : ")).upper()
+		str(info.append(input(f"\n\033[1;96m[*] Informação {num} : ")))
 
-        linha()
-        
-        if moreinfo != 'Y':
-            break
+		linha()
+
+		moreinfo = str(input("\n\033[1;92m[*] Quer acrescentar mais informação? [Y/N] [*] : ")).upper()
+
+		linha()
+		num = num + 1
 
 for inf in info :
-    chrs = ''.join([chrs, inf])
+	chrs = ''.join([chrs, inf])
 
 chrs_alfabetic = 'abcdefghijklmnopqrstuvwxyz'
 chrs_up = chrs.upper()
@@ -48,31 +46,25 @@ chrs_numerics = '1234567890'
 file_name = input('\n\033[1;91m[!] Qual o nome da sua wordlist? [!] : ')
 arq = open(file_name, 'w')
 if str(input('\n\033[36m[?] Quer usar o alfabeto? [Y/N] [?] : ')).upper() == 'Y':
-    chrs = ''.join([chrs, chrs_alfabetic])
+	chrs = ''.join([chrs, chrs_alfabetic])
 if str(input('\n\033[36m[?] Quer usar caracteres maiusculos? [Y/N] [?] : ')).upper() == 'Y':
-    chrs = ''.join([chrs, chrs_up])
+	chrs = ''.join([chrs, chrs_up])
 if str(input('\n\033[36m[?] Quer usar caracteres especiais? [Y/N] [?] : ')).upper() == 'Y':
-    chrs = ''.join([chrs, chrs_specials])
+	chrs = ''.join([chrs, chrs_specials])
 if str(input('\n\033[36m[?] Quer usar caracteres numericos? [Y/N] [?] : ')).upper() == 'Y':
-    chrs = ''.join([chrs, chrs_numerics])
+	chrs = ''.join([chrs, chrs_numerics])
 
-repeat_chars = str(input('\n\033[36m[?] Quer permitir caracteres repetidos? [Y/N] [?] : ')).upper()
+then = time.time() 
 
-then = time.time()
-
-print("\n\033[1;32m [!] Gerando a wordlist [!]\n")
-
-used_combinations = set()
+print("\n\033[1;32m [!] Gerando a wordlist [!]")
 
 for i in range(start, final+1):
-    for j in itertools.product(chrs, repeat=i):
-        temp = ''.join(j)
-        if not any(c in temp for c in used_combinations):
-            used_combinations.add(temp)
-            arq.write(temp + '\n')
+	for j in itertools.product(chrs, repeat=i):
+		temp = ''.join(j)
 
+		arq.write(temp + '\n')
 arq.close()
 
 now = time.time() 
 print("\033[1;32m [!] Finalizado [!]")
-print("\033[1;32m O processo durou: ", now-then, " segundos.")
+print("\033[1;32mO Processo durou: ", now-then, " segundos.")
